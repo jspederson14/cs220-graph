@@ -1,6 +1,7 @@
 package graph.impl;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import graph.IGraph;
@@ -16,7 +17,7 @@ import graph.NodeVisitor;
  */
 public class Graph implements IGraph
 {
-    
+    public HashMap<String,INode> contains=new HashMap<String,INode>();
     /**
      * Return the {@link Node} with the given name.
      * 
@@ -29,7 +30,11 @@ public class Graph implements IGraph
      * @return
      */
     public INode getOrCreateNode(String name) {
-        throw new UnsupportedOperationException("Implement this method");
+        if(containsNode(name))
+        	return contains.get(name);
+        INode n = new Node(name);
+        contains.put(name, n);
+        return n;
     }
 
     /**
@@ -40,7 +45,7 @@ public class Graph implements IGraph
      * @return
      */
     public boolean containsNode(String name) {
-        throw new UnsupportedOperationException("Implement this method");
+        return contains.containsKey(name);
     }
 
     /**
@@ -49,7 +54,7 @@ public class Graph implements IGraph
      * @return
      */
     public Collection<INode> getAllNodes() {
-        throw new UnsupportedOperationException("Implement this method");
+        return contains.values();
     }
     
     /**
