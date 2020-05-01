@@ -2,7 +2,12 @@ package graph.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
 
 import graph.IGraph;
 import graph.INode;
@@ -17,7 +22,7 @@ import graph.NodeVisitor;
  */
 public class Graph implements IGraph
 {
-    public HashMap<String,INode> contains=new HashMap<String,INode>();
+    public HashMap<String,INode> contains = new HashMap<String,INode>();
     /**
      * Return the {@link Node} with the given name.
      * 
@@ -68,8 +73,28 @@ public class Graph implements IGraph
      */
     public void breadthFirstSearch(String startNodeName, NodeVisitor v)
     {
-        // TODO: Implement this method
-        throw new UnsupportedOperationException("Implement this method");
+        HashSet<INode> visited = new HashSet<INode>();
+        Queue <INode> toVisit = new LinkedList<INode>();
+        
+        toVisit.add(getOrCreateNode(startNodeName));
+        
+        while(!toVisit.isEmpty()) {
+        	INode x = toVisit.remove();
+        	if (visited.contains(x))
+        		continue;
+        	v.visit(x);
+        	visited.add(x);
+        	
+        	Iterator<INode> iter = x.getNeighbors().iterator();
+        	
+        	while(iter.hasNext()) {
+        		INode n = iter.next();
+        		if(containsNode(n.getName()))
+        			toVisit.add(n);
+        	}
+        		
+        }
+        	
     }
 
     /**
@@ -83,8 +108,27 @@ public class Graph implements IGraph
      */
     public void depthFirstSearch(String startNodeName, NodeVisitor v)
     {
-        // TODO: implement this method
-        throw new UnsupportedOperationException("Implement this method");
+    	HashSet<INode> visited = new HashSet<INode>();
+        Stack<INode> toVisit = new Stack<INode>();
+        
+        toVisit.push(getOrCreateNode(startNodeName));
+        
+        while(!toVisit.isEmpty()) {
+        	INode x = toVisit.pop();
+        	if (visited.contains(x))
+        		continue;
+        	v.visit(x);
+        	visited.add(x);
+        	
+        	Iterator<INode> iter = x.getNeighbors().iterator();
+        	
+        	while(iter.hasNext()) {
+        		INode n = iter.next();
+        		if(containsNode(n.getName()))
+        			toVisit.push(n);
+        	}
+        		
+        }
     }
 
     /**
