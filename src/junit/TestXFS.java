@@ -135,9 +135,47 @@ graph dfs1 {
         g.depthFirstSearch("A", v);
         
         List<String> order = v.getOrder();
-        System.out.println(order);
         assertEquals("A", order.get(0));
         assertEquals("E", order.get(2));
+    }
+    
+    @Test
+    public void testDFS2() {
+        /* Testing on this graph.
+         * Plug into Graphviz at http://www.webgraphviz.com 
+         * or https://dreampuf.github.io/GraphvizOnline/
+
+graph dfs2 {
+      A -- B
+      B -- D
+      B -- C
+      B -- E
+      C -- D
+      D -- E
+}
+         */
+        IGraph g = new Graph();
+        INode a = g.getOrCreateNode("A");
+        INode b = g.getOrCreateNode("B");
+        INode c = g.getOrCreateNode("C");
+        INode d = g.getOrCreateNode("D");
+        INode e = g.getOrCreateNode("E");
+        a.addUndirectedEdgeToNode(b, 1);
+        b.addUndirectedEdgeToNode(d, 1);
+        b.addUndirectedEdgeToNode(c, 1);
+        b.addUndirectedEdgeToNode(e, 1);
+        c.addUndirectedEdgeToNode(d, 1);
+        d.addUndirectedEdgeToNode(e, 1);
+        
+        OrderedNodeVisitor v = new OrderedNodeVisitor();
+        g.depthFirstSearch("A", v);
+        
+        List<String> order = v.getOrder();
+        assertEquals("A", order.get(0));
+        assertEquals("B", order.get(1));
+        assertEquals("C", order.get(2));
+        assertEquals("D", order.get(3));
+        assertEquals("E", order.get(4));
     }
 
 }
