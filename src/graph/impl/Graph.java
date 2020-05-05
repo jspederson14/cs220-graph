@@ -149,16 +149,19 @@ public class Graph implements IGraph
     	Map<INode,Integer> result = new HashMap<>();
     	PriorityQueue<Path> todo = new PriorityQueue<>();
     	todo.add(new Path(startName, 0));
+    	
     	while(result.size()<getAllNodes().size()) {
     		Path nextPath = todo.poll();
     		INode node = getOrCreateNode(nextPath.dst);
+    		
     		if(result.containsKey(node))
     			continue;
+    		
     		int cost = nextPath.cost;
     		result.put(node, cost);
+    		
     		for(INode n:node.getNeighbors())
     			todo.add(new Path(n,cost+node.getWeight(n)));
-    		System.out.print(todo.peek());
     	}
     	return result;
     }
@@ -172,7 +175,27 @@ public class Graph implements IGraph
      * @return
      */
     public IGraph primJarnik() {
-       IGraph g = new Graph();
-       return g;
+       IGraph mst = new Graph();
+       PriorityQueue<Edge> todo = new PriorityQueue<>();
+       INode start = getAllNodes().iterator().next();
+       Collection<INode> neighbors = start.getNeighbors();
+       for(INode n: neighbors) {
+    	   todo.add(new Edge(start,n,n.getWeight(start)));
+	   }
+      
+       while(mst.getAllNodes().size()<getAllNodes().size()) {
+    	   Edge nextEdge = todo.poll();
+    	   System.out.println(nextEdge);
+    	   INode dNode=getOrCreateNode(nextEdge.edgeName());
+    	   dNode.addDirectedEdgeToNode(nextEdge.connect, nextEdge.cost);
+    	   neighbors = nextEdge.connect.getNeighbors();
+    	   
+    	   for(INode n: neighbors) {
+    		   if(!mst.containsNode(n.getName())) {
+    			   todo.add(new Edge(nextEdge.connect,n,n.getWeight(nextEdge.connect)));
+    		   }
+    	   } 
+       }
+       return mst;
     }
 }

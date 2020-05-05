@@ -6,6 +6,7 @@ public class Path implements Comparable<Path>
 {
   String dst;
   int cost;
+  INode node;
 
   public Path(String dst, int cost){
     this.dst = dst;
@@ -14,6 +15,7 @@ public class Path implements Comparable<Path>
   public Path(INode node, int cost){
 	  this.dst = node.getName();
 	  this.cost = cost;
+	  this.node = node;
 	  }
 
   public int compareTo(Path other){
