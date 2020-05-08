@@ -1,5 +1,7 @@
 package graph.impl;
 
+import java.util.Collection;
+
 import graph.INode;
 
 public class Edge implements Comparable<Edge>{
@@ -7,7 +9,6 @@ public class Edge implements Comparable<Edge>{
 	INode connect;
 	int cost;
 	public Edge(INode node, INode connect, int cost) {
-		node.addDirectedEdgeToNode(connect, cost);
 		this.node = node;
 		this.connect = connect;
 		this.cost = cost;

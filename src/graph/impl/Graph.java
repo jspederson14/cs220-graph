@@ -182,19 +182,22 @@ public class Graph implements IGraph
        for(INode n: neighbors) {
     	   todo.add(new Edge(start,n,n.getWeight(start)));
 	   }
-      
-       while(mst.getAllNodes().size()<getAllNodes().size()) {
+       mst.getOrCreateNode(start.getName());
+       while(mst.getAllNodes().size()<this.getAllNodes().size()) {
     	   Edge nextEdge = todo.poll();
-    	   System.out.println(nextEdge);
-    	   INode dNode=getOrCreateNode(nextEdge.edgeName());
-    	   dNode.addDirectedEdgeToNode(nextEdge.connect, nextEdge.cost);
+    	   mst.getOrCreateNode(nextEdge.connect.getName());
+    	   mst.getOrCreateNode(nextEdge.node.getName()).addDirectedEdgeToNode(nextEdge.connect, nextEdge.cost);
     	   neighbors = nextEdge.connect.getNeighbors();
-    	   
     	   for(INode n: neighbors) {
     		   if(!mst.containsNode(n.getName())) {
     			   todo.add(new Edge(nextEdge.connect,n,n.getWeight(nextEdge.connect)));
     		   }
     	   } 
+       }
+       for(INode n : mst.getAllNodes()) {
+    	   System.out.println(n.getName());
+    	   for(INode m : n.getNeighbors())
+    		   System.out.println(" "+n.getWeight(m)+" "+m.getName());
        }
        return mst;
     }
